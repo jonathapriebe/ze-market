@@ -1,16 +1,21 @@
-import supertest from 'supertest';
-
 describe('Order functional tests', () => {
-    it('should be list orders', async() => {
-        const { body, status } = await supertest(app).get('/orders');
+    it('Should be list orders', async() => {
+        const { body, status } = await global.testRequest.get('/orders');
         expect(status).toBe(200);
-        expect(body).toBe({
-            "products": [
+        expect(body).toEqual({
+          "orders": [
               {
-                "name": "Kiwi",
-                "quantity": 1
-              }
-            ]
-          });
+                "id": "123",
+                "products": [
+                  {
+                    "name": "Watermelon",
+                    "quantity": 2,
+                    "price": 5.47
+                  }
+                 ],
+                "total": 10.94
+             }
+          ]
+        });
     });
 });
