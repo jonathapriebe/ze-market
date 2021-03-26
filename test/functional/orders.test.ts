@@ -5,7 +5,7 @@ describe('Order functional tests', () => {
     expect(body).toEqual({
       orders: [
         {
-          "id": '123',
+          id: '123',
           products: [
             {
               name: 'Watermelon',
