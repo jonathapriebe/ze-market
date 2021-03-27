@@ -5,6 +5,10 @@ import { OrdersController } from './controllers/orders';
 import { Application } from 'express';
 import * as database from '@src/database';
 import { ProductsController } from './controllers/products';
+import { populate } from '@src/populate';
+import { consumer } from '@src/receive';
+//import { apiErrorValidator } from './middlewares/api-error-validator';
+import logger from './logger';
 
 export class SetupServer extends Server {
   constructor(private port = 3000) {
@@ -19,6 +23,11 @@ export class SetupServer extends Server {
 
   private setupExpress(): void {
     this.app.use(bodyParser.json());
+    // this.app.use(
+    //   cors({
+    //     origin: '*',
+    //   })
+    // );
   }
 
   private setupControllers(): void {
@@ -39,9 +48,23 @@ export class SetupServer extends Server {
     return this.app;
   }
 
-  public start(): void {
+  private async setupPopulate(): Promise<void> {
+    await populate();
+  }
+
+  private async initConsumer(): Promise<void> {
+    await consumer();
+  }
+
+  // private setupErrorHandlers(): void {
+  //   this.app.use(apiErrorValidator);
+  // }
+
+  public async start(): Promise<void> {
+    await this.setupPopulate();
+    await this.initConsumer();
     this.app.listen(this.port, () => {
-      console.info('Server listening on port:', this.port);
+      logger.info(`Server listening on port: ${this.port}`);
     });
   }
 }

@@ -1,23 +1,17 @@
-import { Controller, Get, Post } from '@overnightjs/core';
+import { Controller, Get } from '@overnightjs/core';
 import { Product } from '@src/models/products';
 import { Request, Response } from 'express';
+import { BaseController } from '.';
 
 @Controller('products')
-export class ProductsController {
+export class ProductsController extends BaseController {
   @Get(':name')
-  public getProduct(_: Request, res: Response): void {
-    const product = new Product();
-    res.send({
-      name: "Garlic",
-      price: 10.22,
-      quantity: 8
-    });
-  }
-
-  @Post('')
-  public async postProduct(req: Request, res: Response): Promise<void> {
-    const product = new Product(req.body);
-    const result = await product.save();
-    res.status(201).send(result);
+  public async getProduct(req: Request, res: Response): Promise<Response> {
+    const name = req.params.name;
+    const product = await Product.findOne({ name });
+    if (!product) {
+      this.sendFindErrorResponse(res, 404, 'Product not found!');
+    }
+    return res.send(product);
   }
 }

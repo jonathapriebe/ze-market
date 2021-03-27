@@ -1,36 +1,48 @@
 version: '3.8'
 services:
-  # rabbitmq:
-  #   image: rabbitmq:3.8-management
-  #   networks:
-  #     - app-network
-  #   ports:
-  #     - 5672:5672
-  #     - 15672:15672
-  # stock-service:
-  #   image: deliverymuch/backend-challenge:stock-service
-  #   networks:
-  #     - app-network
-  #   environment:
-  #     - RABBITMQ_URL=amqp://rabbitmq
-  #   depends_on:
-  #     - rabbitmq
-  #   links:
-  #     - rabbitmq
-  #   restart: on-failure
+  rabbitmq:
+    image: rabbitmq:3.8-management
+    networks:
+      - app-network
+    ports:
+      - 5672:5672
+      - 15672:15672
+  stock-service:
+    image: deliverymuch/backend-challenge:stock-service
+    networks:
+      - app-network
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+    restart: on-failure
   mongo:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: MongoDB2021!
     ports:
       - '27017:27017'
     networks:
-      - mongo-compose-network
+      - app-network
+  web:
+    build: .
+    command: yarn start
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - '3000:3000'
+    networks:
+      - app-network
+    depends_on:
+      - mongo
+      - rabbitmq
+      - stock-service
 
 networks:
-  # app-network:
-  #   driver: bridge
-  mongo-compose-network:
+  app-network:
     driver: bridge
