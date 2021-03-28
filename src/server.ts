@@ -7,7 +7,6 @@ import * as database from '@src/database';
 import { ProductsController } from './controllers/products';
 import { populate } from '@src/populate';
 import { consumer } from '@src/receive';
-//import { apiErrorValidator } from './middlewares/api-error-validator';
 import logger from './logger';
 
 export class SetupServer extends Server {
@@ -23,11 +22,6 @@ export class SetupServer extends Server {
 
   private setupExpress(): void {
     this.app.use(bodyParser.json());
-    // this.app.use(
-    //   cors({
-    //     origin: '*',
-    //   })
-    // );
   }
 
   private setupControllers(): void {
@@ -49,16 +43,14 @@ export class SetupServer extends Server {
   }
 
   private async setupPopulate(): Promise<void> {
+    logger.info('Populating Mongo with data');
     await populate();
   }
 
   private async initConsumer(): Promise<void> {
+    logger.info('Initializing consumer');
     await consumer();
   }
-
-  // private setupErrorHandlers(): void {
-  //   this.app.use(apiErrorValidator);
-  // }
 
   public async start(): Promise<void> {
     await this.setupPopulate();

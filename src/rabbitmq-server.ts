@@ -1,5 +1,5 @@
 import config, { IConfig } from 'config';
-import { Connection, Channel, connect, Message } from "amqplib";
+import { Connection, Channel, connect, Message } from 'amqplib';
 
 const dbConfig: IConfig = config.get('App');
 
@@ -16,16 +16,19 @@ export default class RabbitmqServer {
     this.channel = await this.conn.createChannel();
   }
 
-  async consume(queue: string, callback: (message: Message) => void): Promise<void> {
+  async consume(
+    queue: string,
+    callback: (message: Message) => void
+  ): Promise<void> {
     if (sourceQueue) {
       this.channel.assertQueue(queue, {
-        durable: true
+        durable: true,
       });
-      
+
       this.channel.bindQueue(queue, sourceQueue, queue);
 
       this.channel.consume(queue, (message) => {
-        if(message) {
+        if (message) {
           callback(message);
           this.channel.ack(message);
         }

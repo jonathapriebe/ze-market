@@ -3,7 +3,7 @@
 		"port": 3000,
 		"sourceQueue": "stock",
         "database": {
-            "mongoUrl": "MONGO_CONNECTION=mongodb://root:MongoDB2021!@mongo:27017/admin"
+            "mongoUrl": "mongodb://root:MongoDB2021!@mongo:27017/admin"
         },
 		"logger": {
 			"enabled": true,
