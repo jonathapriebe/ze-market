@@ -1,10 +1,13 @@
 {
 	"App": {
+		"sourceQueue": "stock",
+		"amqp": "amqp://guest:guest@localhost:5672",
 		"database": {
 			"mongoUrl": "mongodb://root:MongoDB2021!@localhost:27017/admin"
 		},
 		"logger": {
-			"enabled": false
+			"enabled": false,
+			"level": "info"
 		}
 	}
 }
