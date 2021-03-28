@@ -2,6 +2,8 @@
 
 Aplicação criada para simular o funcionamento de um sistema de pedidos, com fila de atualização de estoque e automatização do processo de população do estoque via arquivo csv. Mediante o estoque disponível é possível ou não realizar o pedido. Também é possível visualizar os pedidos aprovados, bem como os produtos previamente carregados.
 
+Obs: Os arquivos de configuração de acesso a banco e demais configurações estão na pasta config na raiz do projeto.
+
 Tecnologias utilizadas:
 
 - NodeJs
