@@ -1,0 +1,361 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "version": "1.0.0",
+      "title": "Zé Market",
+      "description": "Documentação da API do Zé Market. Aqui você encontra as definições das rotas criadas e que podem ser consumidas, no momento, sem uma autenticação."
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/",
+        "description": "Local server"
+      }
+    ],
+    "paths": {
+      "/orders": {
+        "post": {
+          "description": "Criando um pedido",
+          "operationId": "createOrder",
+          "parameters": [],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "201": {
+              "description": "O pedido foi criado com sucesso",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/OrderResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Parâmetros inválidos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": "400",
+                    "error": "Bad Request"
+                  }
+                }
+              }
+            },
+						"500": {
+              "description": "Erro interno",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": "500",
+                    "error": "Bad Request"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "description": "Listar Pedidos",
+          "operationId": "listOrder",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Retornando os pedidos aprovados",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/OrderListResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Parâmetros inválidos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": "400",
+                    "error": "Bad Request"
+                  }
+                }
+              }
+            },
+						"500": {
+              "description": "Erro interno",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": "400",
+                    "error": "Bad Request"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/orders/:id": {
+        "get": {
+          "description": "Retornar detalhes de um pedido",
+          "operationId": "getOrder",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": true,
+              "description": "Identificador do pedido",
+              "example": "605fd197b6149dcfd45273ec"
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Retornando os detalhes de um pedido",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/OrderResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Parâmetros inválidos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": "400",
+                    "error": "Bad Request"
+                  }
+                }
+              }
+            },
+						"500": {
+              "description": "Erro interno",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": "400",
+                    "error": "Bad Request"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/products/:name": {
+        "get": {
+          "description": "Retornar os detalhes de um produto",
+          "operationId": "getProduct",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "name",
+              "schema": {
+                "type": "string"
+              },
+              "required": true,
+              "description": "Nome do produto",
+              "example": "Kiwi"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Os detalhes do produto foram retornados",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            },
+						"404": {
+              "description": "Parâmetros inválidos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": "400",
+                    "error": "Bad Request"
+                  }
+                }
+              }
+            },
+						"500": {
+              "description": "Erro interno",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "error": "Parâmetros inválidos",
+                    "code": "400"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Order": {
+          "type": "object",
+          "properties": {
+            "products": {
+              "type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string",
+										"example": "Kiwi"
+									},
+									"quantity": {
+										"type": "number",
+										"example": 1
+									}
+								}
+							}
+            }
+          }
+        },
+        "Product": {
+          "type":"object",
+					"properties": {
+						"name": {
+							"type": "string",
+							"example": "Kiwi"
+						},
+						"price": {
+							"type": "number",
+							"example": 9.55
+						},
+						"quantity": {
+							"type": "number",
+							"example": 10
+						}	
+					}
+        },
+        "OrderResponse": {
+          "type": "object",
+          "properties": {
+						"id": {
+							"type": "string",
+							"example": "605fd197b6149dcfd45273ec"
+						},
+            "products": {
+              "type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string",
+										"example": "kiwi"
+									},
+									"quantity": {
+										"type": "number",
+										"example": 1
+									},
+									"price": {
+										"type": "number",
+										"example": 9.55
+									}
+								}
+							}
+            },
+            "total": {
+              "type": "number",
+              "example": 21.50
+            }
+          }
+        },
+        "OrderListResponse": {
+          "type": "object",
+          "properties": {
+            "orders": {
+              "type": "array",
+							"items": {
+								"type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "605fd197b6149dcfd45273ec"
+                  },
+                  "products": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "kiwi"
+                        },
+                        "quantity": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "price": {
+                          "type": "number",
+                          "example": 9.55
+                        }
+                      }
+                    }
+                  },
+                  "total": {
+                    "type": "number",
+                    "example": 29.95
+                  }
+                }
+							}
+            }
+          }
+        },
+        "Error": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "string"
+            },
+            "code": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  }

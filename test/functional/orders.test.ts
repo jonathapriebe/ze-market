@@ -146,7 +146,7 @@ describe('Orders functional tests', () => {
       );
     });
 
-    it('Should be return 422 when products not found', async () => {
+    it('Should be return 400 when products not found', async () => {
       const bodyOrder = {
         products: [
           {
@@ -162,14 +162,14 @@ describe('Orders functional tests', () => {
       const { body, status } = await await global.testRequest
         .post('/orders')
         .send(bodyOrder);
-      expect(status).toBe(422);
+      expect(status).toBe(400);
       expect(body).toEqual({
-        code: 422,
+        code: 400,
         error: 'Product Pear not found,Product Juice not found',
       });
     });
 
-    it('Should be return 422 when product does not have a stock', async () => {
+    it('Should be return 400 when product does not have a stock', async () => {
       const bodyOrder = {
         products: [
           {
@@ -185,14 +185,14 @@ describe('Orders functional tests', () => {
       const { body, status } = await await global.testRequest
         .post('/orders')
         .send(bodyOrder);
-      expect(status).toBe(422);
+      expect(status).toBe(400);
       expect(body).toEqual({
-        code: 422,
+        code: 400,
         error: 'Product Kiwi out of stock',
       });
     });
 
-    it('Should be return 422 when body is wrong', async () => {
+    it('Should be return 400 when body is wrong', async () => {
       const bodyOrder = {
         products: [
           {
@@ -207,14 +207,14 @@ describe('Orders functional tests', () => {
       const { body, status } = await await global.testRequest
         .post('/orders')
         .send(bodyOrder);
-      expect(status).toBe(422);
+      expect(status).toBe(400);
       expect(body).toEqual({
-        code: 422,
+        code: 400,
         error: 'Name and quantity are required!',
       });
     });
 
-    it('Should be return 422 when quantity is negative', async () => {
+    it('Should be return 400 when quantity is negative', async () => {
       const bodyOrder = {
         products: [
           {
@@ -230,9 +230,9 @@ describe('Orders functional tests', () => {
       const { body, status } = await await global.testRequest
         .post('/orders')
         .send(bodyOrder);
-      expect(status).toBe(422);
+      expect(status).toBe(400);
       expect(body).toEqual({
-        code: 422,
+        code: 400,
         error: 'Quantity must be greater than 0!',
       });
     });

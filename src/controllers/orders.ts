@@ -48,14 +48,14 @@ export class OrdersController extends BaseController {
         if (!item.name || !item.quantity) {
           return this.sendFindErrorResponse(
             res,
-            422,
+            400,
             'Name and quantity are required!'
           );
         }
         if (item.quantity < 0) {
           return this.sendFindErrorResponse(
             res,
-            422,
+            400,
             'Quantity must be greater than 0!'
           );
         }
@@ -83,7 +83,7 @@ export class OrdersController extends BaseController {
       }
 
       if (errors.length > 0)
-        return this.sendFindErrorResponse(res, 422, errors.toString());
+        return this.sendFindErrorResponse(res, 400, errors.toString());
 
       const order = new Order();
       order.products = allProducts;

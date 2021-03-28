@@ -31,6 +31,8 @@ services:
   web:
     build: .
     command: yarn start
+    environment:
+      - NODE_APP_INSTANCE=2
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
@@ -38,10 +40,14 @@ services:
       - '3000:3000'
     networks:
       - app-network
+    links:
+      - mongo
+      - rabbitmq
     depends_on:
       - mongo
       - rabbitmq
       - stock-service
+    restart: on-failure
 
 networks:
   app-network:

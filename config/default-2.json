@@ -1,0 +1,14 @@
+{
+	"App": {
+		"port": 3000,
+		"sourceQueue": "stock",
+		"amqp": "amqp://guest:guest@rabbitmq",
+		"database": {
+			"mongoUrl": "mongodb://root:MongoDB2021!@mongo/admin"
+		},
+		"logger": {
+			"enabled": true,
+			"level": "info"
+		}
+	}
+}

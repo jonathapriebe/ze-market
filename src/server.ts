@@ -8,6 +8,8 @@ import { ProductsController } from './controllers/products';
 import { populate } from '@src/populate';
 import { consumer } from '@src/receive';
 import logger from './logger';
+import apiSchema from './api.schema.json';
+import swaggerUi from 'swagger-ui-express';
 
 export class SetupServer extends Server {
   constructor(private port = 3000) {
@@ -16,6 +18,7 @@ export class SetupServer extends Server {
 
   public async init(): Promise<void> {
     this.setupExpress();
+    this.docsSetup();
     this.setupControllers();
     this.databaseSetup();
   }
@@ -50,6 +53,10 @@ export class SetupServer extends Server {
   private async initConsumer(): Promise<void> {
     logger.info('Initializing consumer');
     await consumer();
+  }
+
+  private async docsSetup(): Promise<void> {
+    this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiSchema));
   }
 
   public async start(): Promise<void> {
